@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from 'react'
 import { SquareArrowDown } from 'lucide-react'
+import { useToast } from '@/context'
 
 interface Props {
     onContainerClick: (event: MouseEvent) => void
@@ -8,6 +9,7 @@ interface Props {
 
 const DragAndDrop = ({ onContainerClick, onFileDropped }: Props) => {
     const [dragging, setDragging] = useState(false)
+    const { setToastMessage } = useToast()
 
     return (
         <div
@@ -24,7 +26,9 @@ const DragAndDrop = ({ onContainerClick, onFileDropped }: Props) => {
                 }
 
                 if (files && files.length > 1) {
-                    console.error('Only 1 file allowed at a time')
+                    const errorMessage = 'Please drop files one by one'
+                    console.error(errorMessage)
+                    setToastMessage(errorMessage)
                 } else {
                     onFileDropped(files[0])
                 }

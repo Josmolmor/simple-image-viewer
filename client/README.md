@@ -26,3 +26,4 @@ Future improvements
 -   add multiple brush sizes
 -   filters
 -   apply the same transformations to the drawing canvas
+-   add animations / make it look more fancy
