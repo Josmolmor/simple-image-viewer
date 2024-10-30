@@ -1,0 +1,1 @@
+check npm start too not only dev
