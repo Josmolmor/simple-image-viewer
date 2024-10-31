@@ -44,3 +44,10 @@ Users should be able to apply basic manipulations to the image, such as:
 - User Experience: A simple, intuitive, and responsive interface.
 - Bonus: Implementation of advanced image features or Canvas-based manipulation (2D or
   3D).
+
+# 🚀 Installation
+
+```shell
+git clone https://github.com/Josmolmor/simple-image-viewer.git
+cd simple-image-viewer
+```

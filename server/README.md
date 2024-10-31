@@ -93,10 +93,3 @@ method: DELETE
 path: /chosenDirectoryName/:filename
 payload: file name
 ```
-
-# 🚀 Installation
-
-```shell
-git clone https://github.com/Josmolmor/simple-image-viewer.git
-cd simple-image-viewer
-```
