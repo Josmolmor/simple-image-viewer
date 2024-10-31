@@ -64,11 +64,11 @@ npm run preview
 
 The first time you run the app no images should show up because you haven't uploaded anything yet.
 
-image-1
+![Screenshot 2024-10-31 004849](https://github.com/user-attachments/assets/060e8f88-0f92-4d8c-9058-55dfe60f469c)
 
 Go ahead and click on the top element o drag and drop a valid image to preview it.
 
-image-2
+![Screenshot 2024-10-31 004957](https://github.com/user-attachments/assets/c9d311a7-827c-431f-88c8-041c87925069)
 
 The application allows you to do the following actions after you attach an image:
 
@@ -84,8 +84,9 @@ The application allows you to do the following actions after you attach an image
 
 After you press upload, you should see that your image now appears at the bottom of the page. This image includes all the modifications you did to it before uploading, including the drawings. You can also remove it by clicking on the trash icon that overlays the image.
 
-image-3
-image-4
+![Screenshot 2024-10-31 005941](https://github.com/user-attachments/assets/f8ccdef9-8562-484b-aa81-1f3c82247684)
+
+![Screenshot 2024-10-31 010004](https://github.com/user-attachments/assets/166bae73-aae4-4975-b797-54e2af0a54cc)
 
 The application allows the user to click on any of the already uploaded images to attach them and preview too, making it easier to preview and modified already existing images.
 
