@@ -35,8 +35,21 @@ Then install the dependencies and run the project:
 
 ```shell
 npm i
+```
+
+and then
+
+```shell
 npm run start
 ```
+
+or
+
+```shell
+npm run dev
+```
+
+depending if you want hot reload functionality with nodemon or not.
 
 You should be able to see a message like the following on your console if the server is running. (the port value may vary if you set a different one on the `.env` file)
 
@@ -79,4 +92,11 @@ Deletes an image from the directory given its file name
 method: DELETE
 path: /chosenDirectoryName/:filename
 payload: file name
+```
+
+# 🚀 Installation
+
+```shell
+git clone https://github.com/Josmolmor/simple-image-viewer.git
+cd simple-image-viewer
 ```
