@@ -35,7 +35,7 @@ Then install the dependencies and run the project:
 
 ```shell
 npm i
-npm start
+npm run start
 ```
 
 You should be able to see a message like the following on your console if the server is running. (the port value may vary if you set a different one on the `.env` file)
@@ -44,7 +44,7 @@ You should be able to see a message like the following on your console if the se
 Server started on port 8080
 ```
 
-# 📝 Functionality
+# 📝 Details
 
 Makes the `/uploads` (or whatever directory you set on the previous step) directory public to be able to fetch images from it
 

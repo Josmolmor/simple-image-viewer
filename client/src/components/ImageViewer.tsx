@@ -53,7 +53,7 @@ const ImageViewer = () => {
     const disabled = loading || !imageUrl
 
     const parseFile = (file: File) => {
-        if (!file) return setToastMessage('File type unsupported')
+        if (!file) return setToastMessage('No file found')
 
         // Extra check for image type. (We're still triple checking on the backend endpoint)
         if (!['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {

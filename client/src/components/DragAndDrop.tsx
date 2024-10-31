@@ -7,6 +7,8 @@ interface Props {
     onFileDropped: (file: File) => void
 }
 
+const HOVER_HEX_COLOR = '#effff0'
+
 const DragAndDrop = ({ onContainerClick, onFileDropped }: Props) => {
     const [dragging, setDragging] = useState(false)
     const { setToastMessage } = useToast()
@@ -42,8 +44,8 @@ const DragAndDrop = ({ onContainerClick, onFileDropped }: Props) => {
                 setDragging(false)
             }}
             onDragOver={(event) => event.preventDefault()}
-            className="border border-dotted border-green-500 rounded-lg p-6 w-full cursor-pointer text-gray-400 transition-colors hover:bg-[#effff0]"
-            style={dragging ? { background: '#effff0' } : {}}
+            className={`border border-dotted border-green-500 rounded-lg p-6 w-full cursor-pointer text-gray-400 transition-colors hover:bg-[${HOVER_HEX_COLOR}]`}
+            style={dragging ? { background: `${HOVER_HEX_COLOR}` } : {}}
         >
             <span className="pointer-events-none select-none flex flex-col items-center gap-2 text-pretty">
                 <SquareArrowDown className="h-6 w-6 text-gray-400" />
