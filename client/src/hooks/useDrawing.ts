@@ -139,7 +139,6 @@ export const useDrawing = ({
             }
             context.restore()
         }
-        console.log(height, width)
     }, [height, width])
 
     return {

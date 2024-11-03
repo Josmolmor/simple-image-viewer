@@ -5,9 +5,9 @@ import useManipulations from '@/hooks/useManipulations.ts'
 import DragAndDrop from '@/components/DragAndDrop.tsx'
 import api from '@/lib/axios.ts'
 import { useImageList } from '@/context'
-import { RotationControl } from './RotationControl'
-import { ZoomControl } from './ZoomControl'
-import ActionButtons from './ActionButtons'
+import { RotationControl } from './RotationControl/RotationControl'
+import { ZoomControl } from './ZoomControl/ZoomControl'
+import ActionButtons from './ActionButtons/ActionButtons'
 import { useImageViewer } from '@/hooks/useImageViewer'
 import DrawingCanvas from './DrawingCanvas'
 
@@ -252,7 +252,7 @@ const ImageViewer = () => {
     }, [drawImageOnCanvas, manipulations])
 
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-6">
             <DragAndDrop
                 onFileDropped={parseFile}
                 onContainerClick={() => typeFileInputAttachRef.current?.click()}
@@ -266,7 +266,7 @@ const ImageViewer = () => {
                 onChangeCapture={handleImageAttached} // When using the drag and drop mixed with the click to attach functionality "onChange" acts weird sometimes. Using onChangeCapture fixes it
                 className="hidden"
             />
-            <div id="manipulations" className="flex flex-wrap gap-4 w-full">
+            <div id="manipulations" className="flex flex-wrap gap-4 w-full px-2">
                 <RotationControl
                     addRotation={addRotation}
                     lastRotation={lastRotation}

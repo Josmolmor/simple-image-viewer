@@ -1,6 +1,4 @@
 import { FC } from 'react'
-import { Button } from '../ui/button'
-import { ManipulationsState } from './types'
 import {
     FlipHorizontal2,
     FlipVertical2,
@@ -9,6 +7,8 @@ import {
     Undo2,
     Upload,
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ManipulationsState } from '../types'
 
 type Props = {
     disabled: boolean
@@ -35,7 +35,7 @@ const ActionButtons: FC<Props> = ({
 }) => {
     return (
         <>
-            <div className="flex flex-wrap justify-around gap-4 w-full">
+            <div className="flex flex-wrap justify-around gap-4 w-full px-2">
                 <Button
                     onClick={onUndoLastAction}
                     disabled={disabled || manipulations.length === 0}
@@ -75,7 +75,7 @@ const ActionButtons: FC<Props> = ({
                     Flip vertical
                 </Button>
             </div>
-            <div className="flex flex-wrap justify-around gap-4 w-full">
+            <div className="flex flex-wrap justify-around gap-4 w-full px-2">
                 <Button
                     onClick={onReset}
                     disabled={disabled}
