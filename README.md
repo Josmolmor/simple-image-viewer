@@ -51,3 +51,4 @@ Users should be able to apply basic manipulations to the image, such as:
 git clone https://github.com/Josmolmor/simple-image-viewer.git
 cd simple-image-viewer
 ```
+then check each individual folder (client and server) for instructions on how to start each one.
