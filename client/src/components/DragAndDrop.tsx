@@ -2,7 +2,7 @@ import { useState, MouseEvent } from 'react'
 import { SquareArrowDown } from 'lucide-react'
 import { useToast } from '@/context'
 
-interface Props {
+type Props = {
     onContainerClick: (event: MouseEvent) => void
     onFileDropped: (file: File) => void
 }

@@ -1,4 +1,4 @@
-interface ZoomControlProps {
+type ZoomControlProps = {
     disabled: boolean
     lastZoom: () => number
     addZoom: (value: number) => void

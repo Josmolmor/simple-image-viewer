@@ -1,12 +1,12 @@
 import { Dimensions, DrawingCanvasRef } from '@/components/ImageViewer/types'
 import { useToast } from '@/context'
 import { ToastVariant } from '@/context/ToastContext/types'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react'
 
 type UseImageViewerReturn = {
-    canvasRef: React.RefObject<HTMLCanvasElement>
-    typeFileInputAttachRef: React.RefObject<HTMLInputElement>
-    drawingCanvasRef: React.RefObject<DrawingCanvasRef>
+    canvasRef: RefObject<HTMLCanvasElement>
+    typeFileInputAttachRef: RefObject<HTMLInputElement>
+    drawingCanvasRef: RefObject<DrawingCanvasRef>
     dimensions: Dimensions
     updateDimensions: () => void
     imageUrl: string | null

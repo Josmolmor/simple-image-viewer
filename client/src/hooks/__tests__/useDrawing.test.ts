@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { useDrawing } from '@/hooks/useDrawing'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { MouseEvent } from 'react'
 
 describe('useDrawing', () => {
     const mockDimensions = { width: 800, height: 600 }
@@ -60,7 +61,7 @@ describe('useDrawing', () => {
             clientY: 100,
             preventDefault: vi.fn(),
             currentTarget: mockCanvas,
-        } as unknown as React.MouseEvent<HTMLCanvasElement>
+        } as unknown as MouseEvent<HTMLCanvasElement>
 
         act(() => {
             result.current.startDrawing(mockEvent)
@@ -93,7 +94,7 @@ describe('useDrawing', () => {
                 clientY: 100,
                 preventDefault: vi.fn(),
                 currentTarget: mockCanvas,
-            } as unknown as React.MouseEvent<HTMLCanvasElement>)
+            } as unknown as MouseEvent<HTMLCanvasElement>)
         })
 
         // Move while drawing
@@ -103,7 +104,7 @@ describe('useDrawing', () => {
                 clientY: 150,
                 preventDefault: vi.fn(),
                 currentTarget: mockCanvas,
-            } as unknown as React.MouseEvent<HTMLCanvasElement>)
+            } as unknown as MouseEvent<HTMLCanvasElement>)
         })
 
         expect(mockContext.lineTo).toHaveBeenCalledWith(150, 150)
@@ -124,7 +125,7 @@ describe('useDrawing', () => {
                 clientY: 150,
                 preventDefault: vi.fn(),
                 currentTarget: mockCanvas,
-            } as unknown as React.MouseEvent<HTMLCanvasElement>)
+            } as unknown as MouseEvent<HTMLCanvasElement>)
         })
 
         expect(mockContext.lineTo).not.toHaveBeenCalled()

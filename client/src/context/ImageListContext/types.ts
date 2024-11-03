@@ -1,9 +1,9 @@
-export interface ActiveImagePayload {
+export type ActiveImagePayload = {
     url: string
     file: File | null
 }
 
-export interface ImageListContext {
+export type ImageListContext = {
     imageUrlList: string[]
     fetchImageList: () => void
     deleteUpload: (imageUrl: string) => void

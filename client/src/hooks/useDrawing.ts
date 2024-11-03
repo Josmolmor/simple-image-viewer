@@ -1,4 +1,4 @@
-import { useRef, useState, MouseEvent, TouchEvent, useEffect } from 'react'
+import { useRef, useState, MouseEvent, TouchEvent, useEffect, RefObject } from 'react'
 
 type UseDrawingProps = {
     height: number
@@ -6,7 +6,7 @@ type UseDrawingProps = {
 }
 
 type UseDrawingReturn = {
-    canvasRef: React.RefObject<HTMLCanvasElement>
+    canvasRef: RefObject<HTMLCanvasElement>
     isDrawing: boolean
     startDrawing: (
         e: MouseEvent<HTMLCanvasElement> | TouchEvent<HTMLCanvasElement>

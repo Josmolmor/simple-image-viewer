@@ -2,7 +2,7 @@ import { createContext } from 'react'
 
 export type ToastVariant = 'success' | 'error'
 
-export interface ToastContext {
+export type ToastContext = {
     toastMessage: string
     variant: ToastVariant
     setToastMessage: (message: string, variant?: ToastVariant) => void

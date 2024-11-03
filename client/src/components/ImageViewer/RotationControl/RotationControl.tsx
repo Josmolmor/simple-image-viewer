@@ -1,4 +1,4 @@
-interface RotationControlProps {
+type RotationControlProps = {
     disabled: boolean
     lastRotation: () => number
     addRotation: (value: number) => void
