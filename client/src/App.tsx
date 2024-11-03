@@ -1,10 +1,10 @@
 import './App.css'
-import ImageViewer from './components/ImageViewer.tsx'
 import { ToastProvider } from '@/context/ToastContext'
 import Toast from '@/components/Toast.tsx'
 import ImageGallery from '@/components/ImageGallery.tsx'
 import { ImageListProvider } from '@/context/ImageListContext'
 import { Images } from 'lucide-react'
+import ImageViewer from './components/ImageViewer/ImageViewer'
 
 function App() {
     return (

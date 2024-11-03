@@ -23,7 +23,10 @@ const ImageGallery = () => {
 
                 <div className="flex gap-4 flex-wrap justify-center">
                     {imageList.map((imagePath) => (
-                        <div key={imagePath} className="relative">
+                        <div
+                            key={imagePath}
+                            className="relative transform transition duration-250 hover:scale-105"
+                        >
                             <img
                                 src={`${import.meta.env.VITE_API_URL}${imagePath}`}
                                 alt={`Uploaded image with path ${imagePath}`}

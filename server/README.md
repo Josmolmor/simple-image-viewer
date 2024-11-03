@@ -1,11 +1,13 @@
 # ⚙️ Stack
 
-- node
-- [nodemon](https://www.npmjs.com/package/nodemon)
-- dotenv
-- express
-- cors (add a basic layer of security)
-- multer (handle image multipart/form-data)
+> [!NOTE]
+>
+> - node
+> - [nodemon](https://www.npmjs.com/package/nodemon)
+> - dotenv
+> - express
+> - cors (add a basic layer of security)
+> - multer (handle image multipart/form-data)
 
 # 🚀 Installation
 

@@ -1,13 +1,15 @@
 # ⚙️ Stack
 
--   react
--   typescript
--   vite
--   tailwindcss (styling)
--   lucide-react (icons)
--   shadcn/radix (component library; "components/ui" folder)
--   prettier
--   eslint
+> [!NOTE]
+>
+> -   react
+> -   typescript
+> -   vite
+> -   tailwindcss (styling)
+> -   lucide-react (icons)
+> -   shadcn/radix (component library; "components/ui" folder)
+> -   prettier
+> -   eslint
 
 # 🚀 Installation
 
@@ -23,12 +25,27 @@ It should point to your node backend URL. For example:
 VITE_API_URL=http://localhost:8080
 ```
 
-Then install the dependencies and run the project:
+Then install the dependencies with:
 
 ```shell
 npm i
+```
+
+And run the project:
+
+```shell
 npm run dev
 ```
+
+If you want to run a production build
+
+```shell
+npm run build
+npm run preview
+```
+
+> [!IMPORTANT]  
+> When swapping between dev and production, you need to make sure to update the server `.env` file with the correct `CLIENT_HOST` value most of the times.
 
 # 🗣️ More commands
 

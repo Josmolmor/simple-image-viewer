@@ -1,27 +1,17 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
-import { Button } from '@/components/ui/button.tsx'
+import { useCallback, useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input.tsx'
-import {
-    FlipHorizontal2,
-    FlipVertical2,
-    Redo2,
-    RefreshCw,
-    Undo2,
-    Upload,
-} from 'lucide-react'
 import type { AxiosResponse } from 'axios'
 import useManipulations from '@/hooks/useManipulations.ts'
 import DragAndDrop from '@/components/DragAndDrop.tsx'
 import api from '@/lib/axios.ts'
-import DrawingCanvas from '@/components/DrawingCanvas.tsx'
-import { useImageList, useToast } from '@/context'
-
-// -180 is the same as 180 and 180 is flipping it vertical, so I don't include them here
-const rotationOptions = [-135, -90, -45, 0, 45, 90, 135]
-const zoomOptions = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3]
+import { useImageList } from '@/context'
+import { RotationControl } from './RotationControl'
+import { ZoomControl } from './ZoomControl'
+import ActionButtons from './ActionButtons'
+import { useImageViewer } from '@/hooks/useImageViewer'
+import DrawingCanvas from './DrawingCanvas'
 
 const ImageViewer = () => {
-    const { setToastMessage } = useToast()
     const { fetchImageList, activeImage, setActiveImage } = useImageList()
     const {
         manipulations,
@@ -39,40 +29,23 @@ const ImageViewer = () => {
         lastVerticalFlip,
     } = useManipulations()
 
-    const typeFileInputAttachRef = useRef<HTMLInputElement>(null)
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    const drawingCanvasRef = useRef<{
-        getCanvas: () => HTMLCanvasElement | null
-        clearCanvas: () => void
-    }>(null)
-
-    const [imageUrl, setImageUrl] = useState<string | null>(null)
-    const [imageFile, setImageFile] = useState<File | null>(null)
-    const [inputResetKey, setInputResetKey] = useState(0)
-    const [loading, setLoading] = useState(false)
-    const disabled = loading || !imageUrl
-
-    const parseFile = (file: File) => {
-        if (!file) return setToastMessage('No file found')
-
-        // Extra check for image type. (We're still triple checking on the backend endpoint)
-        if (!['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
-            setInputResetKey(inputResetKey + 1)
-            setToastMessage('File type not allowed')
-            return
-        }
-
-        const reader = new FileReader()
-        reader.onload = () => setImageUrl(`${reader.result}`)
-        reader.readAsDataURL(file)
-        setImageFile(file)
-    }
-
-    const handleImageAttached = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (!file) return
-        parseFile(file)
-    }
+    const {
+        canvasRef,
+        typeFileInputAttachRef,
+        drawingCanvasRef,
+        imageUrl,
+        imageFile,
+        inputResetKey,
+        setLoading,
+        setImageUrl,
+        setImageFile,
+        disabled,
+        dimensions,
+        updateDimensions,
+        parseFile,
+        handleImageAttached,
+        setToastMessage,
+    } = useImageViewer()
 
     // State to sync canvas dimensions
     const [canvasDrawn, setCanvasDrawn] = useState(0)
@@ -179,7 +152,7 @@ const ImageViewer = () => {
         } else {
             drawImageOnCanvas()
         }
-    }, [imageUrl, activeImage.file, activeImage.url])
+    }, [imageUrl, activeImage.file, activeImage.url, drawImageOnCanvas])
 
     // Reset the "activeImageUrl" variable when a new image is being dropped or attached
     useEffect(() => {
@@ -255,22 +228,6 @@ const ImageViewer = () => {
         })
     }
 
-    // Drawing canvas related methods
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-    const updateDimensions = () => {
-        if (canvasRef.current) {
-            const { width, height } = canvasRef.current.getBoundingClientRect()
-            setDimensions({ width, height })
-        }
-    }
-
-    // Listener for keeping up the same dimensions for both canvas (base and drawing)
-    useEffect(() => {
-        updateDimensions()
-        window.addEventListener('resize', updateDimensions)
-        return () => window.removeEventListener('resize', updateDimensions) // clean up
-    }, [])
-
     // run update dimensions every time the canvas is set with a new image
     useEffect(() => {
         const baseCanvas = canvasRef.current
@@ -292,7 +249,7 @@ const ImageViewer = () => {
     // Force re-draws after manipulations
     useEffect(() => {
         drawImageOnCanvas()
-    }, [manipulations])
+    }, [drawImageOnCanvas, manipulations])
 
     return (
         <div className="flex flex-col items-center gap-4">
@@ -310,138 +267,50 @@ const ImageViewer = () => {
                 className="hidden"
             />
             <div id="manipulations" className="flex flex-wrap gap-4 w-full">
-                <div className="w-full sm:w-[calc(50%-0.5rem)] flex flex-col gap-2 items-start">
-                    <label className="text-xs font-semibold">
-                        Rotation: {lastRotation()}°
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                        {rotationOptions.map((value) => (
-                            <label
-                                key={value}
-                                className="flex items-center space-x-2 cursor-pointer"
-                            >
-                                <input
-                                    type="radio"
-                                    name="rotation"
-                                    disabled={disabled}
-                                    value={value}
-                                    checked={lastRotation() === value}
-                                    onChange={() => addRotation(value)}
-                                    className="accent-green-500"
-                                />
-                                <span className="text-sm">{value}°</span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
-                <div className="w-full sm:w-[calc(50%-0.5rem)] flex flex-col gap-2 items-start">
-                    <label className="text-xs font-semibold">
-                        Zoom: {Math.round(lastZoom() * 100)}%
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                        {zoomOptions.map((value) => (
-                            <label
-                                key={value}
-                                className="flex items-center space-x-2 cursor-pointer"
-                            >
-                                <input
-                                    type="radio"
-                                    name="zoom"
-                                    disabled={disabled}
-                                    value={value}
-                                    checked={lastZoom() === value}
-                                    onChange={() => addZoom(value)}
-                                    className="accent-green-500"
-                                />
-                                <span className="text-sm">
-                                    {Math.round(value * 100)}%
-                                </span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
+                <RotationControl
+                    addRotation={addRotation}
+                    lastRotation={lastRotation}
+                    disabled={disabled}
+                />
+                <ZoomControl
+                    addZoom={addZoom}
+                    lastZoom={lastZoom}
+                    disabled={disabled}
+                />
             </div>
-            <div className="flex flex-wrap justify-around gap-4 w-full">
-                <Button
-                    onClick={undoLastAction}
-                    disabled={disabled || manipulations.length === 0}
-                    variant="secondary"
-                    className="w-full sm:max-w-[calc(25%-1rem)]"
-                >
-                    <Undo2 className="w-4 h-4" />
-                    Undo
-                </Button>
-                <Button
-                    onClick={redoLastAction}
-                    disabled={
-                        disabled || manipulations.length === reDoArray.length
-                    }
-                    variant="secondary"
-                    className="w-full sm:max-w-[calc(25%-1rem)]"
-                >
-                    <Redo2 className="w-4 h-4" />
-                    Re-do
-                </Button>
-                <Button
-                    onClick={flipHorizontal}
-                    disabled={disabled}
-                    variant="secondary"
-                    className="w-full sm:max-w-[calc(25%-1rem)]"
-                >
-                    <FlipHorizontal2 className="w-4 h-4" />
-                    Flip horizontal
-                </Button>
-                <Button
-                    onClick={flipVertical}
-                    disabled={disabled}
-                    variant="secondary"
-                    className="w-full sm:max-w-[calc(25%-1rem)]"
-                >
-                    <FlipVertical2 className="w-4 h-4" />
-                    Flip vertical
-                </Button>
-            </div>
-            <div className="flex flex-wrap justify-around gap-4 w-full">
-                <Button
-                    onClick={() => {
-                        resetManipulations()
-                        drawingCanvasRef.current?.clearCanvas()
-                    }}
-                    disabled={disabled}
-                    variant="secondary"
-                    className="w-full sm:max-w-[calc(50%-0.5rem)]"
-                >
-                    <RefreshCw className="w-4 h-4" />
-                    Reset
-                </Button>
-                <Button
-                    onClick={handleImageUpload}
-                    disabled={disabled}
-                    className="w-full sm:max-w-[calc(50%-0.5rem)]"
-                >
-                    <Upload className="w-4 h-4" />
-                    Upload
-                </Button>
-            </div>
+            <ActionButtons
+                disabled={disabled}
+                manipulations={manipulations}
+                reDoArray={reDoArray}
+                onUndoLastAction={undoLastAction}
+                onRedoLastAction={redoLastAction}
+                onFlipHorizontal={flipHorizontal}
+                onFlipVertical={flipVertical}
+                onReset={() => {
+                    resetManipulations()
+                    drawingCanvasRef.current?.clearCanvas()
+                }}
+                onUpload={handleImageUpload}
+            />
             {(imageUrl || activeImage.url) && (
-                <div className="relative mt-4">
-                    <canvas
-                        id="baseCanvas"
-                        ref={canvasRef}
-                        className={`bg-white w-auto h-full max-h-[480px] max-w-full md:max-w-2xl fit-cover rounded-lg scroll-pt-8`}
-                    />
-                    <div className="absolute top-0 left-0">
+                <>
+                    <div className="grid place-content-center mt-4">
+                        <canvas
+                            id="baseCanvas"
+                            ref={canvasRef}
+                            className={`row-start-1 row-end-1 col-start-1 col-end-1 bg-white w-auto h-auto max-h-[480px] max-w-full md:max-w-2xl fit-cover rounded-lg scroll-pt-8`}
+                        />
                         <DrawingCanvas
                             ref={drawingCanvasRef}
                             width={dimensions.width}
                             height={dimensions.height}
-                            className="w-full h-full"
+                            className="h-full w-full"
                         />
                     </div>
                     <span className="self-end text-xs text-muted-foreground px-2 break-all">
                         {imageFile?.name}
                     </span>
-                </div>
+                </>
             )}
         </div>
     )
